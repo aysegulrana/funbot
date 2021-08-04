@@ -11,8 +11,18 @@ namespace FunBot
 {
     public class EmptyBot : ActivityHandler
     {
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+            foreach (var member in membersAdded)
+            {
+                if (member.Id != turnContext.Activity.Recipient.Id)
+                {
+                    await turnContext.SendActivityAsync(MessageFactory.Text($"Hello world!"), cancellationToken);
+                }
+            }
+        }
         // Messages sent to the user.
-        private const string WelcomeMessage = "Eğlence botuna hoş geldiniz. Bu bot size keyifli " +
+        /*private const string WelcomeMessage = "Eğlence botuna hoş geldiniz. Bu bot size keyifli " +
                                                 "vakit geçirmeniz için önerilerde bulunmak " +
                                                 "amacıyla tasarlandı. ";
 
@@ -115,7 +125,7 @@ namespace FunBot
 
             var response = MessageFactory.Attachment(card.ToAttachment());
             await turnContext.SendActivityAsync(response, cancellationToken);
-        }
+        }*/
     }
 }
 
