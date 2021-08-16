@@ -41,7 +41,7 @@ namespace FunBot.Dialogs
             // Create an object in which to collect the user's information within the dialog.
             stepContext.Values[UserInfo] = new UserProfile();
 
-            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Adın nedir ?") };
+            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text("Adın nedir?") };
 
             // Ask the user to enter their name.
             return await stepContext.PromptAsync(nameof(TextPrompt), promptOptions, cancellationToken);
@@ -53,7 +53,7 @@ namespace FunBot.Dialogs
             var userProfile = (UserProfile)stepContext.Values[UserInfo];
             userProfile.Name = (string)stepContext.Result;
 
-            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text($"Memnun olduk {userProfile.Name}. Peki yaşını da öğrenebilir miyiz ?") };
+            var promptOptions = new PromptOptions { Prompt = MessageFactory.Text($"Memnun oldum {userProfile.Name}. Peki yaşını da öğrenebilir miyim?") };
 
             // Ask the user to enter their age.
             return await stepContext.PromptAsync(nameof(NumberPrompt<int>), promptOptions, cancellationToken);
@@ -71,7 +71,7 @@ namespace FunBot.Dialogs
             {
                 // If they are too young, skip the review selection dialog, and pass an empty list to the next step.
                 await stepContext.Context.SendActivityAsync(
-                    MessageFactory.Text("You must be 18 or older to participate."),
+                    MessageFactory.Text("FunBot'la konuşmak için 18 yaşından büyük olmalısın :("),
                     cancellationToken);
                 return await stepContext.NextAsync(new List<string>(), cancellationToken);
             }
@@ -91,7 +91,7 @@ namespace FunBot.Dialogs
 
             // Thank them for participating.
             await stepContext.Context.SendActivityAsync(
-                MessageFactory.Text($"Thanks for participating, {((UserProfile)stepContext.Values[UserInfo]).Name}."),
+                MessageFactory.Text($"Benimle konuştuğun için teşekkürler, {((UserProfile)stepContext.Values[UserInfo]).Name}."),
                 cancellationToken);
 
             // Exit the dialog, returning the collected user information.

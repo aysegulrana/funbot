@@ -22,9 +22,9 @@ namespace FunBot.Dialogs
         {
             "Alışveriş yapmak istiyorum.🌍",
             "Günümü güzelleştirecek bir film izlemek istiyorum.🎬",
-            "Beni alıp götürecek bir dizi önerisi istiyorum. 🎥",
+            "Beni alıp götürecek bir dizi istiyorum. 🎥",
             "Yeni müzikler keşfetmek istiyorum. 🎧",
-            "Kitap okumak istiyorum. 📚"
+            "Kitapların dünyasına dalmak istiyorum. 📚"
         };
 
         public ReviewSelectionDialog()
@@ -68,7 +68,7 @@ namespace FunBot.Dialogs
                             Title = "FunBot",
                             Subtitle = "Alışveriş Siteleri",
                             Text = "Alışveriş yapabileceğin e-ticaret sitelerine aşağıdan ulaşabilirsin:",
-                            Images = new List<CardImage> { new CardImage(" ") },
+                            Images = new List<CardImage> { new CardImage("https://image.flaticon.com/icons/png/512/3081/3081559.png") },
                             Buttons = new List<CardAction> {
                                 new CardAction(ActionTypes.Call, "amazon", value: "https://www.amazon.com.tr/"),
                                 new CardAction(ActionTypes.OpenUrl, "n11", value: "https://www.n11.com/"),
@@ -80,15 +80,12 @@ namespace FunBot.Dialogs
                         };
                         return heroCard.ToAttachment();
                     }
-                    Activity reply = MessageFactory.Text("Haber kanallarını inceleyebilirsiniz:");
+                    Activity reply = MessageFactory.Text("Alışveriş siteleri:");
                     reply.AttachmentLayout = AttachmentLayoutTypes.List;
 
                     reply.Attachments.Add(Haber());
 
                     await stepContext.Context.SendActivityAsync(reply, cancellationToken);
-
-
-
                 }
 
                 if (list[0].Contains("film")) //else if??
@@ -100,7 +97,7 @@ namespace FunBot.Dialogs
                             Title = "Fun Bot",
                             Subtitle = "Film Platformları",
                             Text = "Sitelere aşağıdaki linklerden ulaşabilirsiniz.",
-                            Images = new List<CardImage> { new CardImage("https://upload.wikimedia.org/wikipedia/tr/0/07/Do%C4%9Fu%C5%9F_Yay%C4%B1n_Grubu_logosu.png") },
+                            Images = new List<CardImage> { new CardImage("https://image.flaticon.com/icons/png/512/3163/3163478.png") },
                             Buttons = new List<CardAction> {
                                 new CardAction(ActionTypes.Call, "Netflix", value: "https://www.netflix.com/tr/"),
                                 new CardAction(ActionTypes.OpenUrl, "Prime Video", value: "https://www.primevideo.com/"),
@@ -122,33 +119,53 @@ namespace FunBot.Dialogs
 
                 if (list[0].Contains("dizi"))
                 {
-                    Attachment Dizi()
+                    var activity = MessageFactory.Carousel(
+                    new Attachment[]
                     {
-                        var heroCard = new ThumbnailCard
-                        {
-                            Title = "Fun Bot",
-                            Subtitle = "Dizi Platformları",
-                            Text = "Platformlara aşağıdaki linklerden ulaşabilirsiniz.",
-                            Images = new List<CardImage> { new CardImage("https://upload.wikimedia.org/wikipedia/tr/0/07/Do%C4%9Fu%C5%9F_Yay%C4%B1n_Grubu_logosu.png") },
-                            Buttons = new List<CardAction> {
-                                new CardAction(ActionTypes.Call, "Netflix", value: "https://www.netflix.com/tr/"),
-                                new CardAction(ActionTypes.OpenUrl, "Prime Video", value: "https://www.primevideo.com/"),
-                                new CardAction(ActionTypes.OpenUrl, "BluTV", value: "https://www.blutv.com"),
-                                new CardAction(ActionTypes.OpenUrl, "Star TV", value: "https://startv.com.tr"),
-                                new CardAction(ActionTypes.OpenUrl, "Puhu TV", value: "https://puhutv.com/")
-                            }
-                        };
-                        return heroCard.ToAttachment();
-                    }
-                    Activity reply = MessageFactory.Text("Dizi kanallarını inceleyebilirsiniz:");
-                    reply.AttachmentLayout = AttachmentLayoutTypes.List;
-
-                    reply.Attachments.Add(Dizi());
-
-                    await stepContext.Context.SendActivityAsync(reply, cancellationToken);
+                        new HeroCard(
+                            title: "See What's Next",
+                            images: new CardImage[] { new CardImage(url: "https://image.flaticon.com/icons/png/512/732/732228.png") },
+                            buttons: new CardAction[]
+                            {
+                                new CardAction(title: "Netflix", type: ActionTypes.OpenUrl, value: "https://www.netflix.com/tr/")
+                            })
+                        .ToAttachment(),
+                        new HeroCard(
+                            title: "'Great shows stay with you.'",
+                            images: new CardImage[] { new CardImage(url: "https://is2-ssl.mzstatic.com/image/thumb/Purple115/v4/4c/31/8f/4c318f19-5b85-8915-28c1-5608aa77d6c5/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/460x0w.webp") },
+                            buttons: new CardAction[]
+                            {
+                                new CardAction(title: "Amazon Prime Video", type: ActionTypes.OpenUrl, value: "https://www.primevideo.com/")
+                            })
+                        .ToAttachment(),
+                        new HeroCard(
+                            title: "Türkiye'nin İnternet Televizyonu",
+                            images: new CardImage[] { new CardImage(url: "https://upload.wikimedia.org/wikipedia/commons/e/eb/BluTV_Logo.png") },
+                            buttons: new CardAction[]
+                            {
+                                new CardAction(title: "BluTV", type: ActionTypes.OpenUrl, value: "https://www.blutv.com")
+                            })
+                        .ToAttachment(),
+                        new HeroCard(
+                            title: "Sen Nasıl İzlersen",
+                            images: new CardImage[] { new CardImage(url: "https://upload.wikimedia.org/wikipedia/commons/6/61/Puhutv_logo.jpg") },
+                            buttons: new CardAction[]
+                            {
+                                new CardAction(title: "Puhu TV", type: ActionTypes.OpenUrl, value: "https://puhutv.com/")
+                            })
+                        .ToAttachment(),
+                                           new HeroCard(
+                            title: "Türkiye'nin Star'ı",
+                            images: new CardImage[] { new CardImage(url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/StarTV.svg/800px-StarTV.svg.png") },
+                            buttons: new CardAction[]
+                            {
+                                new CardAction(title: "Star TV", type: ActionTypes.OpenUrl, value: "https://startv.com.tr")
+                            })
+                        .ToAttachment(),});
+                    await stepContext.Context.SendActivityAsync(activity, cancellationToken);
                 }
 
-                if (list[0].Contains("Müzik"))
+                if (list[0].Contains("müzik"))
                 {
                     Attachment Muzik()
                     {
@@ -157,15 +174,41 @@ namespace FunBot.Dialogs
                             Title = "Fun Bot",
                             Subtitle = "Müzik Platformları",
                             Text = "Sitelere aşağıdaki linklerden ulaşabilirsiniz.",
-                            Images = new List<CardImage> { new CardImage("https://upload.wikimedia.org/wikipedia/tr/0/07/Do%C4%9Fu%C5%9F_Yay%C4%B1n_Grubu_logosu.png") },
+                            Images = new List<CardImage> { new CardImage("https://image.flaticon.com/icons/png/512/3169/3169983.png") },
                             Buttons = new List<CardAction> {
-                                new CardAction(ActionTypes.OpenUrl, "YouTube", value: "https://www.youtube.com/"),
+                                new CardAction(ActionTypes.OpenUrl, "YouTube Music", value: "https://www.youtube.com/"),
                                 new CardAction(ActionTypes.OpenUrl, "Spotify", value: "https://www.spotify.com"),
                             }
                         };
                         return heroCard.ToAttachment();
                     }
                     Activity reply = MessageFactory.Text("Müzik kanallarını inceleyebilirsiniz:");
+                    reply.AttachmentLayout = AttachmentLayoutTypes.List;
+
+                    reply.Attachments.Add(Muzik());
+
+                    await stepContext.Context.SendActivityAsync(reply, cancellationToken);
+                }
+
+                if (list[0].Contains("dalmak"))
+                {
+                    Attachment Muzik()
+                    {
+                        var heroCard = new ThumbnailCard
+                        {
+                            Title = "Fun Bot",
+                            Subtitle = "Kitap",
+                            Text = "Kitaplara ulaşabileceğiniz yollar:",
+                            Images = new List<CardImage> { new CardImage("https://image.flaticon.com/icons/png/512/2702/2702069.png") },
+                            Buttons = new List<CardAction> {
+                                new CardAction(ActionTypes.OpenUrl, "Sesli Kitap", value: "https://www.storytel.com/tr/tr/?gclid=CjwKCAjw9uKIBhA8EiwAYPUS3BPjV54DCFXlAHESaVkTAtgWJHIE-Zjn2aNaQ94eiOc7BhUuWWQsiBoCw7QQAvD_BwE"),
+                                new CardAction(ActionTypes.OpenUrl, "e-book", value: "https://www.ebooks.com/en-tr/"),
+                                new CardAction(ActionTypes.OpenUrl, "kitapyurdu", value: "https://www.kitapyurdu.com/")
+                            }
+                        };
+                        return heroCard.ToAttachment();
+                    }
+                    Activity reply = MessageFactory.Text("Kitap kaynaklarını inceleyebilirsiniz:");
                     reply.AttachmentLayout = AttachmentLayoutTypes.List;
 
                     reply.Attachments.Add(Muzik());
